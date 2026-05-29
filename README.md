@@ -2,6 +2,8 @@
 
 Binary classification of stroke risk using three fully interpretable models, with both global and local explanations for each.
 
+![Banner](assets/banner.jpg)
+
 ## Dataset
 
 [Healthcare Stroke Prediction Dataset](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset) (fedesoriano, Kaggle)
@@ -19,13 +21,19 @@ Download the CSV (`healthcare-dataset-stroke-data.csv`) from Kaggle and place it
 
 | Model | Library | Global XAI | Local XAI |
 |---|---|---|---|
-| Explainable Boosting Machine (EBM) | InterpretML | Feature importances, shape functions | Per-patient contribution bars |
+| Explainable Boosting Machine (EBM) | InterpretML | Feature importances, shape functions | Per-patient contribution bars (top 5) |
 | Classification Tree | scikit-learn | Tree plot, Gini importances | Decision path contributions |
 | Logistic Regression | scikit-learn | Odds-ratio plot | SHAP waterfall |
 
 ## Evaluation
 
-Class imbalance is addressed with SMOTE (applied to the training set only). The primary evaluation metric is **PR-AUC** (Average Precision), which is more informative than ROC-AUC under severe class imbalance. Secondary metrics: ROC-AUC, Precision, Recall, F1.
+Class imbalance is addressed with `class_weight='balanced'` on all three models, which penalises stroke misclassifications ~19x more heavily during training. The primary evaluation metric is **PR-AUC** (Average Precision), which is more informative than ROC-AUC under severe class imbalance. Secondary metrics: ROC-AUC, Precision, Recall, F1.
+
+| Model | Recall | ROC-AUC | PR-AUC |
+|---|---|---|---|
+| EBM | 0.71 | 0.810 | 0.188 |
+| Logistic Regression | 0.69 | 0.810 | 0.191 |
+| Classification Tree | 0.69 | 0.787 | 0.127 |
 
 ## Notebooks
 
