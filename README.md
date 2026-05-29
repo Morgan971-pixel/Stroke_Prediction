@@ -1,55 +1,49 @@
-# Stroke Prediction Project
+# Stroke Prediction: Explainable AI
 
-This project analyzes a dataset of patient attributes to predict the likelihood of a stroke. It includes data cleaning, exploratory data analysis (EDA), and the implementation of a predictive model.
+Binary classification of stroke risk using three fully interpretable models, with both global and local explanations for each.
 
 ## Dataset
 
-The dataset contains patient information, including demographic data, health metrics, and lifestyle factors. Key features include:
+[Healthcare Stroke Prediction Dataset](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset) (fedesoriano, Kaggle)
 
-*   `gender`, `age`
-*   `hypertension`, `heart_disease`
-*   `ever_married`, `work_type`, `Residence_type`
-*   `avg_glucose_level`, `bmi`
-*   `smoking_status`
+| Property | Value |
+|---|---|
+| Rows | 5,110 |
+| Features | age, gender, hypertension, heart_disease, ever_married, work_type, Residence_type, avg_glucose_level, bmi, smoking_status |
+| Target | `stroke` (binary) |
+| Class imbalance | ~95% no-stroke / ~5% stroke |
 
-The target variable is `stroke` (1 if the patient had a stroke, 0 otherwise).
+Download the CSV (`healthcare-dataset-stroke-data.csv`) from Kaggle and place it in the project root before running the notebook.
 
-## Methodology
+## Models
 
-The project follows these key steps:
+| Model | Library | Global XAI | Local XAI |
+|---|---|---|---|
+| Explainable Boosting Machine (EBM) | InterpretML | Feature importances, shape functions | Per-patient contribution bars |
+| Classification Tree | scikit-learn | Tree plot, Gini importances | Decision path contributions |
+| Logistic Regression | scikit-learn | Odds-ratio plot | SHAP waterfall |
 
-1.  **Data Cleaning:** The notebook handles missing values and prepares the data for analysis.
-2.  **Exploratory Data Analysis (EDA):** Visualizations are used to understand the relationships between different features and the likelihood of a stroke.
-3.  **Feature Engineering:** Categorical features are encoded into a numerical format suitable for machine learning models.
-4.  **Model Training:** A classification model is trained on the preprocessed data to predict stroke risk.
-5.  **Model Evaluation:** The model's performance is assessed using various classification metrics.
+## Evaluation
 
-## Getting Started
+Class imbalance is addressed with SMOTE (applied to the training set only). The primary evaluation metric is **PR-AUC** (Average Precision), which is more informative than ROC-AUC under severe class imbalance. Secondary metrics: ROC-AUC, Precision, Recall, F1.
 
-### Prerequisites
+## Notebooks
 
-*   Python 3
-*   Jupyter Notebook or JupyterLab
+| Notebook | Description |
+|---|---|
+| `Stroke_Prediction_XAI.ipynb` | Main notebook: XAI pipeline with EBM, Tree, and LR |
+| `Stroke_Prediction.ipynb` | Original EDA and baseline models |
 
-### Installation
+## Setup
 
-1.  Clone this repository:
-    ```bash
-    git clone <repository_url>
-    ```
-2.  Navigate to the project directory:
-    ```bash
-    cd Stroke_Prediction
-    ```
-3.  Install the required libraries:
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+git clone https://github.com/Morgan971-pixel/Stroke_Prediction.git
+cd Stroke_Prediction
+pip install -r requirements.txt
+jupyter notebook Stroke_Prediction_XAI.ipynb
+```
 
-## Usage
+## Requirements
 
-1.  Open the Jupyter notebook:
-    ```bash
-    jupyter notebook Stroke_Prediction.ipynb
-    ```
-2.  Run the cells in the notebook to follow the analysis and see the results.
+- Python 3.9+
+- See `requirements.txt` for full dependency list
